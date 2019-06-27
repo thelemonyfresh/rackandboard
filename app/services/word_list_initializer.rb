@@ -1,13 +1,17 @@
-class POROWordList
+class WordListInitializer
   attr_accessor :words
   attr_accessor :anagrams
 
   def initialize(file_path)
-    @anagrams = Hash.new([])
-    @words = File.readlines(file_path).each do |word|
-      chomped_word = word.chomp!
-      @anagrams[anagram_key(word)] += [chomped_word]
+    File.readlines(file_path).each do |line|
+      word_text = line.chomp
+      ag = Alphagram.find_or_create_by(text: alphagram_for_word(word_text))
+      Word.create(text: word_text, alphagram: ag)
     end
+  end
+
+  def alphagram_for_word(word)
+    word.chars.sort.join
   end
 
   def words_for_letters_exact(letters)
@@ -31,6 +35,6 @@ class POROWordList
   end
 
   private def anagram_key(word)
-    word.split('').sort.join
+    word.chars.sort.join
   end
 end
