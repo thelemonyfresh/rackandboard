@@ -31,6 +31,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'webpacker'
 gem 'react-rails'
 gem 'dotenv-rails'
+gem 'jquery-rails'
+gem 'bootstrap', '~> 4.3.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
