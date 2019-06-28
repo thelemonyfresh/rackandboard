@@ -1,3 +1,10 @@
-// Place all the styles related to the Problems controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.board-cell {
+  height: 75px;
+  width: 75px;
+  border: solid
+}
+
+.tile {
+  height: 73px;
+  width: 73px
+}

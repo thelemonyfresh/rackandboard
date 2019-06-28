@@ -6,7 +6,16 @@ import Rack from "./Rack";
 class Problem extends React.Component {
   render () {
     return (
-      <div>This is a problem.</div>
+      <div className='container'>
+        <div className='card'>
+          <div className='card-body'>
+            <Board layout={this.props.boardLayout}/>
+          </div>
+          <div className='card-footer'>
+            <Rack letters={this.props.rackLetters}/>
+          </div>
+        </div>
+      </div>
     );
   }
 }
