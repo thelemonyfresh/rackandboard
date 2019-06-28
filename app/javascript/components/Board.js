@@ -1,22 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Tile from "./Tile";
+import BoardCell from "./BoardCell";
 
 class Board extends React.Component {
   createGrid = () => {
     let table = [];
 
     //rows
-    for(let i = 0; i < this.props.layout.length; i++) {
+    for(let i = 0; i < this.props.problemLayout.length; i++) {
       let row = [];
       // columns
-      for(let j = 0; j < this.props.layout[0].length; j++) {
+      for(let j = 0; j < this.props.problemLayout[0].length; j++) {
         row.push(
-          <td className='board-cell'
-              key={j}
-          >
-            {this.letterTile(i,j)}
-          </td>
+          <BoardCell key={j}
+                     x={i}
+                     y={j}
+                     problemLayout={this.props.problemLayout}
+                     solutionLayout={this.props.solutionLayout}/>
         );
       }
       table.push(<tr key={i}>{row}</tr>);
@@ -25,19 +25,15 @@ class Board extends React.Component {
     return table;
   };
 
-  letterTile(x,y) {
-    let letter = this.props.layout[x][y];
-    if (letter.length == 0) return '';
-    return <Tile problemTile letter={letter}/> ;
-  }
-
   render () {
     return (
-      <table>
-        <tbody>
-          {this.createGrid()}
-        </tbody>
-      </table>
+      <div className='row justify-content-center'>
+        <table>
+          <tbody>
+            {this.createGrid()}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }

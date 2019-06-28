@@ -6,14 +6,20 @@ import Rack from "./Rack";
 class Problem extends React.Component {
   constructor(props) {
     super(props);
-    this.solution = null;
     this.selectedRackLetterHandler = this.selectedRackLetterHandler.bind(this);
    // this.placeRackLetterHandler = this.placeRackLetterHandler.bind(this);
   }
 
+  problemWidth() {
+    return this.props.problemLayout[0].length;
+  }
+  problemHeight() {
+    return this.props.problemLayout.length;
+  };
+
   state = {
     rackLetters: this.props.initialRackLetters,
-    solution: null,
+    solutionLayout: [...Array(this.problemHeight())].map(x=>Array(this.problemWidth()).fill(null)),
     selectedRackLetter: null
   }
 
@@ -25,15 +31,18 @@ class Problem extends React.Component {
   render () {
     return (
       <div className='container'>
-        <div className='card'>
-          <div className='card-body'>
-            <Board layout={this.props.boardLayout}/>
-          </div>
-          <div className='card-footer'>
-            {console.log(this.state.rackLetters)}
-            <Rack letters={this.state.rackLetters}
-                  letterClickHandler={this.selectedRackLetterHandler}
-                  selectedLetter={this.state.selectedRackLetter}/>
+        <div className='row justify-content-center'>
+          <div className='card'>
+            <div className='card-body'>
+              <Board problemLayout={this.props.problemLayout}
+                     solutionLayout={this.state.solutionLayout}/>
+            </div>
+            <div className='card-footer'>
+              {console.log(this.state.rackLetters)}
+              <Rack letters={this.state.rackLetters}
+                    letterClickHandler={this.selectedRackLetterHandler}
+                    selectedLetter={this.state.selectedRackLetter}/>
+            </div>
           </div>
         </div>
       </div>
