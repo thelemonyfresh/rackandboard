@@ -12,8 +12,10 @@ class Board extends React.Component {
       // columns
       for(let j = 0; j < this.props.layout[0].length; j++) {
         row.push(
-          <td className='board-cell' key={j}>
-            {this.letterTile(this.props.layout[i][j])}
+          <td className='board-cell'
+              key={j}
+          >
+            {this.letterTile(i,j)}
           </td>
         );
       }
@@ -23,9 +25,10 @@ class Board extends React.Component {
     return table;
   };
 
-  letterTile(letter) {
+  letterTile(x,y) {
+    let letter = this.props.layout[x][y];
     if (letter.length == 0) return '';
-    return <Tile letter={letter}/> ;
+    return <Tile problemTile letter={letter}/> ;
   }
 
   render () {

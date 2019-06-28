@@ -4,6 +4,24 @@ import Board from "./Board";
 import Rack from "./Rack";
 
 class Problem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.solution = null;
+    this.selectedRackLetterHandler = this.selectedRackLetterHandler.bind(this);
+   // this.placeRackLetterHandler = this.placeRackLetterHandler.bind(this);
+  }
+
+  state = {
+    rackLetters: this.props.initialRackLetters,
+    solution: null,
+    selectedRackLetter: null
+  }
+
+  selectedRackLetterHandler(tileKey) {
+    let newKey = tileKey == this.state.selectedRackLetter ? null : tileKey;
+    this.setState({selectedRackLetter: newKey});
+  }
+
   render () {
     return (
       <div className='container'>
@@ -12,7 +30,10 @@ class Problem extends React.Component {
             <Board layout={this.props.boardLayout}/>
           </div>
           <div className='card-footer'>
-            <Rack letters={this.props.rackLetters}/>
+            {console.log(this.state.rackLetters)}
+            <Rack letters={this.state.rackLetters}
+                  letterClickHandler={this.selectedRackLetterHandler}
+                  selectedLetter={this.state.selectedRackLetter}/>
           </div>
         </div>
       </div>
