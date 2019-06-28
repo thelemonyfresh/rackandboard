@@ -5,9 +5,9 @@ import Tile from "./Tile";
 class Rack extends React.Component {
   getLetters() {
     let letters = [];
-    this.props.letters.forEach((e)=>{
+    this.props.letters.forEach((e,i)=>{
       letters.push(
-       <Tile letter={e}/>
+        <Tile letter={e} key={i}/>
       );
     });
     return letters;
