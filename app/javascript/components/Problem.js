@@ -42,13 +42,15 @@ class Problem extends React.Component {
     let newSelectedIndex = null;
 
     // remove solution letter from board
-    if (!this.state.selectedRackLetter && solutionLetter) {
+    if (this.state.selectedRackLetter == null && solutionLetter) {
+      console.log('blah');
       newSolutionArray[y][x] = null;
       newRackLetters.push(solutionLetter);
     };
 
     // place selected rack tile
     if (this.state.selectedRackLetter != null && emptyCell) {
+      console.log('bleeeh');
       newRackLetters.splice(rackLetterIndex,1);
       newSolutionArray[y][x] = rackLetter;
       newSelectedIndex = rackLetterIndex;
