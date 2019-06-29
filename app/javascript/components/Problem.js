@@ -103,7 +103,6 @@ class Problem extends React.Component {
           <div className='col-xl-7 col-lg-8 col-md-10 col-sm-11 col-xs-12'>
             <div className='card' ref='problemContainer'>
               <div className='card-body'>
-                <div className='card-title'>Board:</div>
                 <Board
                   boardLayout={this.props.boardLayout}
                   solutionLayout={this.state.solutionLayout}
@@ -112,7 +111,6 @@ class Problem extends React.Component {
                 />
               </div>
               <div className='card-footer'>
-                <div className='card-title'></div>
                 <Rack
                   letters={this.state.rackLetters}
                   clickHandler={this.rackClickHandler}

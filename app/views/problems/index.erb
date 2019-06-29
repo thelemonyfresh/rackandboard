@@ -1,0 +1,8 @@
+<div><%= link_to "create a problem", new_problem_path %></div>
+
+Problems:
+<ul>
+<% @problems.each do |p|%>
+  <li><%= link_to p.id, problem_path(p) %></li>
+<% end %>
+</ul>
