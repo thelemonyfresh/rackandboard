@@ -22,16 +22,15 @@ class Problem extends React.Component {
     rackLetters: this.props.initialRackLetters,
     solutionLayout: [...Array(this.problemHeight())].map(x=>Array(this.problemWidth()).fill(null)),
     selectedRackLetter: null,
+    cellSize: 0
   }
 
   boardClickHandler(e) {
-    console.log(e.target.dataset);
     let x = e.target.dataset.boardPositionX;
     let y = e.target.dataset.boardPositionY;
 
     let problemLetter = this.props.problemLayout[y][x];
     let solutionLetter = this.state.solutionLayout[y][x];
-    console.log(`solution letter: ${solutionLetter}`);
     let emptyCell = !problemLetter && !solutionLetter;
 
     let newRackLetters = this.state.rackLetters;
@@ -42,7 +41,6 @@ class Problem extends React.Component {
 
     // remove solution letter from board
     if (!this.state.selectedRackLetter && solutionLetter) {
-      console.log("remove");
       newSolutionArray[y][x] = null;
       newRackLetters.push(solutionLetter);
     };
@@ -56,8 +54,7 @@ class Problem extends React.Component {
     this.setState({
       solutionLayout: newSolutionArray,
       rackLetters: newRackLetters,
-      selectedRackLetter: null,
-      cellSize: 0
+      selectedRackLetter: null
     });
   }
 
@@ -106,7 +103,7 @@ class Problem extends React.Component {
                   letters={this.state.rackLetters}
                   clickHandler={this.rackClickHandler}
                   selectedLetter={this.state.selectedRackLetter}
-                  cellSize={this.state.cellSize || 0}
+                  cellSize={this.state.cellSize}
                 />
               </div>
             </div>
