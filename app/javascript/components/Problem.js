@@ -8,6 +8,7 @@ class Problem extends React.Component {
     super(props);
     this.rackClickHandler = this.rackClickHandler.bind(this);
     this.boardClickHandler = this.boardClickHandler.bind(this);
+    this.updateDimensions = this.updateDimensions.bind(this);
   }
 
   problemWidth() {
@@ -20,7 +21,7 @@ class Problem extends React.Component {
   state = {
     rackLetters: this.props.initialRackLetters,
     solutionLayout: [...Array(this.problemHeight())].map(x=>Array(this.problemWidth()).fill(null)),
-    selectedRackLetter: null
+    selectedRackLetter: null,
   }
 
   boardClickHandler(e) {
@@ -47,7 +48,7 @@ class Problem extends React.Component {
     };
 
     // place selected rack tile
-    if (this.state.selectedRackLetter && emptyCell) {
+    if (this.state.selectedRackLetter != null && emptyCell) {
       newRackLetters.splice(rackLetterIndex,1);
       newSolutionArray[y][x] = rackLetter;
     };
@@ -55,37 +56,59 @@ class Problem extends React.Component {
     this.setState({
       solutionLayout: newSolutionArray,
       rackLetters: newRackLetters,
-      selectedRackLetter: null
+      selectedRackLetter: null,
+      cellSize: 0
     });
   }
 
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+    this.updateDimensions();
+  };
+
+  updateDimensions() {
+    this.setState({cellSize: this.cellSize()});
+  };
+
+  cellSize(width) {
+    let cardWidth = this.refs.problemContainer.offsetWidth;
+    let windowHeight = window.innerHeight;
+
+    let maxWidth = (cardWidth - 10) / this.problemWidth();
+    let maxHeight = (windowHeight) / (this.problemHeight() + 2);
+    return Math.min(maxWidth, maxHeight);
+  };
+
   rackClickHandler(e) {
-    console.log(this.state.selectedRackLetter);
     let letterIndex = parseInt(e.target.dataset.rackPosition);
     letterIndex = this.state.selectedRackLetter ? null : letterIndex;
     this.setState({selectedRackLetter: letterIndex});
-  }
+  };
 
   render () {
     return (
       <div className='container'>
         <div className='row justify-content-center'>
-          <div className='card'>
-            <div className='card-body'>
-              <div className='card-title'>Board:</div>
-              <Board
-                problemLayout={this.props.problemLayout}
-                solutionLayout={this.state.solutionLayout}
-                clickHandler={this.boardClickHandler}
-              />
-            </div>
-            <div className='card-footer'>
-              <div className='card-title'>Rack:</div>
-              <Rack
-                letters={this.state.rackLetters}
-                clickHandler={this.rackClickHandler}
-                selectedLetter={this.state.selectedRackLetter}
-              />
+          <div className='col-xl-7 col-lg-8 col-md-10 col-sm-11 col-xs-12'>
+            <div className='card' ref='problemContainer'>
+              <div className='card-body'>
+                <div className='card-title'>Board:</div>
+                <Board
+                  problemLayout={this.props.problemLayout}
+                  solutionLayout={this.state.solutionLayout}
+                  clickHandler={this.boardClickHandler}
+                  cellSize={this.state.cellSize || 0}
+                />
+              </div>
+              <div className='card-footer'>
+                <div className='card-title'>Rack:</div>
+                <Rack
+                  letters={this.state.rackLetters}
+                  clickHandler={this.rackClickHandler}
+                  selectedLetter={this.state.selectedRackLetter}
+                  cellSize={this.state.cellSize || 0}
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -15,6 +15,7 @@ class Rack extends React.Component {
           rackPosition={i}
           selected={this.props.selectedLetter == i}
           clickHandler={this.props.clickHandler}
+          cellSize={this.props.cellSize}
         />
       );
     });

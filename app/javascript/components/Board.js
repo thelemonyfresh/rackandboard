@@ -12,12 +12,15 @@ class Board extends React.Component {
       // columns
       for(let j = 0; j < this.props.problemLayout[0].length; j++) {
         row.push(
-          <BoardCell key={j}
-                     x={j}
-                     y={i}
-                     problemLayout={this.props.problemLayout}
-                     solutionLayout={this.props.solutionLayout}
-                     clickHandler={this.props.clickHandler}/>
+          <BoardCell
+            key={j}
+            x={j}
+            y={i}
+            problemLayout={this.props.problemLayout}
+            solutionLayout={this.props.solutionLayout}
+            clickHandler={this.props.clickHandler}
+            cellSize={this.props.cellSize}
+          />
         );
       }
       table.push(<tr key={i}>{row}</tr>);
