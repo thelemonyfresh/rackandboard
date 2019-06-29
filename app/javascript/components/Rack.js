@@ -12,8 +12,10 @@ class Rack extends React.Component {
         <Tile
           letter={e}
           key={tileKey}
-          selected={this.props.selectedLetter == tileKey}
-          clickHandler={()=>this.props.letterClickHandler(tileKey)}/>
+          rackPosition={i}
+          selected={this.props.selectedLetter == i}
+          clickHandler={this.props.clickHandler}
+        />
       );
     });
     return letters;

@@ -6,8 +6,8 @@ import Rack from "./Rack";
 class Problem extends React.Component {
   constructor(props) {
     super(props);
-    this.selectRackLetterHandler = this.selectRackLetterHandler.bind(this);
-    this.placeRackLetterHandler = this.placeRackLetterHandler.bind(this);
+    this.rackClickHandler = this.rackClickHandler.bind(this);
+    this.boardClickHandler = this.boardClickHandler.bind(this);
   }
 
   problemWidth() {
@@ -23,27 +23,47 @@ class Problem extends React.Component {
     selectedRackLetter: null
   }
 
-  placeRackLetterHandler(e) {
-    console.log(e.target);
-    if (this.state.selectedRackLetter) {
-      let letterChar = this.state.selectedRackLetter.substr(0,1);
-      let letterIndex = parseInt(this.state.selectedRackLetter.substr(1,2));
+  boardClickHandler(e) {
+    console.log(e.target.dataset);
+    let x = e.target.dataset.boardPositionX;
+    let y = e.target.dataset.boardPositionY;
 
-      let newRackLetters = this.state.rackLetters;
-      newRackLetters.splice(letterIndex);
+    let problemLetter = this.props.problemLayout[y][x];
+    let solutionLetter = this.state.solutionLayout[y][x];
+    console.log(`solution letter: ${solutionLetter}`);
+    let emptyCell = !problemLetter && !solutionLetter;
 
-      let solutionArray = this.state.solutionLayout;
-      solutionArray[e.target.dataset.y][e.target.dataset.x] = letterChar;
-      this.setState({
-        solutionLayout: solutionArray,
-        rackLetters: newRackLetters
-      });
-    }
+    let newRackLetters = this.state.rackLetters;
+    let newSolutionArray = this.state.solutionLayout;
+
+    let rackLetterIndex = this.state.selectedRackLetter;
+    let rackLetter = this.state.rackLetters[rackLetterIndex];
+
+    // remove solution letter from board
+    if (!this.state.selectedRackLetter && solutionLetter) {
+      console.log("remove");
+      newSolutionArray[y][x] = null;
+      newRackLetters.push(solutionLetter);
+    };
+
+    // place selected rack tile
+    if (this.state.selectedRackLetter && emptyCell) {
+      newRackLetters.splice(rackLetterIndex,1);
+      newSolutionArray[y][x] = rackLetter;
+    };
+
+    this.setState({
+      solutionLayout: newSolutionArray,
+      rackLetters: newRackLetters,
+      selectedRackLetter: null
+    });
   }
 
-  selectRackLetterHandler(tileKey) {
-    let newKey = tileKey == this.state.selectedRackLetter ? null : tileKey;
-    this.setState({selectedRackLetter: newKey});
+  rackClickHandler(e) {
+    console.log(this.state.selectedRackLetter);
+    let letterIndex = parseInt(e.target.dataset.rackPosition);
+    letterIndex = this.state.selectedRackLetter ? null : letterIndex;
+    this.setState({selectedRackLetter: letterIndex});
   }
 
   render () {
@@ -52,15 +72,20 @@ class Problem extends React.Component {
         <div className='row justify-content-center'>
           <div className='card'>
             <div className='card-body'>
-              <Board problemLayout={this.props.problemLayout}
-                     solutionLayout={this.state.solutionLayout}
-                     cellClickHandler={this.placeRackLetterHandler}/>
+              <div className='card-title'>Board:</div>
+              <Board
+                problemLayout={this.props.problemLayout}
+                solutionLayout={this.state.solutionLayout}
+                clickHandler={this.boardClickHandler}
+              />
             </div>
             <div className='card-footer'>
-              {console.log(this.state.rackLetters)}
-              <Rack letters={this.state.rackLetters}
-                    letterClickHandler={this.selectRackLetterHandler}
-                    selectedLetter={this.state.selectedRackLetter}/>
+              <div className='card-title'>Rack:</div>
+              <Rack
+                letters={this.state.rackLetters}
+                clickHandler={this.rackClickHandler}
+                selectedLetter={this.state.selectedRackLetter}
+              />
             </div>
           </div>
         </div>

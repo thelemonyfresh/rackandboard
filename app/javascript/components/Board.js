@@ -17,7 +17,7 @@ class Board extends React.Component {
                      y={i}
                      problemLayout={this.props.problemLayout}
                      solutionLayout={this.props.solutionLayout}
-                     clickHandler={this.props.cellClickHandler}/>
+                     clickHandler={this.props.clickHandler}/>
         );
       }
       table.push(<tr key={i}>{row}</tr>);

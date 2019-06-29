@@ -15,7 +15,10 @@ class BoardCell extends React.Component {
     let letter = this.problemLetter() || this.solutionLetter();
     if (letter) {
       return <Tile problemTile={!!this.problemLetter()}
-                letter={letter}/> ;
+                   letter={letter}
+                   boardPositionX={this.props.x}
+                   boardPositionY={this.props.y}
+                   clickHandler={this.props.clickHandler}/> ;
     };
     return '';
   };
@@ -23,8 +26,8 @@ class BoardCell extends React.Component {
   render () {
     return (
       <td className='board-cell'
-          data-x={this.props.x}
-          data-y={this.props.y}
+          data-board-position-x={this.props.x}
+          data-board-position-y={this.props.y}
           onClick={this.props.clickHandler}>
         {this.getTile()}
       </td>

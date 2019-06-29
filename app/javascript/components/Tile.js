@@ -19,11 +19,13 @@ class Tile extends React.Component {
   render () {
     return (
       <div draggable={this.draggable()}
-           className={"card tile shadow "+ this.bgColor()}
-           onClick={this.props.clickHandler}>
-        <div className='card-body p-1 text-center'>
-          <h1>{this.props.letter}</h1>
-        </div>
+           className={"tile "+ this.bgColor()}
+           onClick={this.props.clickHandler}
+           data-rack-position={this.props.rackPosition}
+           data-board-position-x={this.props.boardPositionX}
+           data-board-position-y={this.props.boardPositionY}
+      >
+        {this.props.letter}
       </div>
     );
   }
