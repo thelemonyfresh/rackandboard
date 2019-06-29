@@ -4,7 +4,7 @@ import Tile from "./Tile";
 
 class BoardCell extends React.Component {
   problemLetter() {
-    return this.props.problemLayout[this.props.y][this.props.x];
+    return this.props.boardLayout[this.props.y][this.props.x];
   }
 
   solutionLetter() {

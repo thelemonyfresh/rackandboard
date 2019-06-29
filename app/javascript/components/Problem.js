@@ -12,10 +12,10 @@ class Problem extends React.Component {
   }
 
   problemWidth() {
-    return this.props.problemLayout[0].length;
+    return this.props.boardLayout[0].length;
   }
   problemHeight() {
-    return this.props.problemLayout.length;
+    return this.props.boardLayout.length;
   };
 
   state = {
@@ -29,7 +29,7 @@ class Problem extends React.Component {
     let x = e.target.dataset.boardPositionX;
     let y = e.target.dataset.boardPositionY;
 
-    let problemLetter = this.props.problemLayout[y][x];
+    let problemLetter = this.props.boardLayout[y][x];
     let solutionLetter = this.state.solutionLayout[y][x];
     let emptyCell = !problemLetter && !solutionLetter;
 
@@ -38,6 +38,8 @@ class Problem extends React.Component {
 
     let rackLetterIndex = this.state.selectedRackLetter;
     let rackLetter = this.state.rackLetters[rackLetterIndex];
+
+    let newSelectedIndex = null;
 
     // remove solution letter from board
     if (!this.state.selectedRackLetter && solutionLetter) {
@@ -49,12 +51,18 @@ class Problem extends React.Component {
     if (this.state.selectedRackLetter != null && emptyCell) {
       newRackLetters.splice(rackLetterIndex,1);
       newSolutionArray[y][x] = rackLetter;
+      newSelectedIndex = rackLetterIndex;
+
+      if (rackLetterIndex >= newRackLetters.length) {
+        newSelectedIndex = newRackLetters.length;
+      }
+      if (newRackLetters.length == 0) newSelectedIndex = null;
     };
 
     this.setState({
       solutionLayout: newSolutionArray,
       rackLetters: newRackLetters,
-      selectedRackLetter: null
+      selectedRackLetter: newSelectedIndex
     });
   }
 
@@ -68,17 +76,21 @@ class Problem extends React.Component {
   };
 
   cellSize(width) {
+    //
     let cardWidth = this.refs.problemContainer.offsetWidth;
     let windowHeight = window.innerHeight;
 
-    let maxWidth = (cardWidth - 10) / this.problemWidth();
+    let tilesWide = Math.max(this.problemWidth(), this.props.initialRackLetters.length);
+
+    let maxWidth = (cardWidth - 10) / tilesWide;
     let maxHeight = (windowHeight) / (this.problemHeight() + 2);
     return Math.min(maxWidth, maxHeight);
   };
 
   rackClickHandler(e) {
     let letterIndex = parseInt(e.target.dataset.rackPosition);
-    letterIndex = this.state.selectedRackLetter ? null : letterIndex;
+    console.log(`li: ${letterIndex}`);
+    letterIndex = this.state.selectedRackLetter != null ? null : letterIndex;
     this.setState({selectedRackLetter: letterIndex});
   };
 
@@ -91,14 +103,14 @@ class Problem extends React.Component {
               <div className='card-body'>
                 <div className='card-title'>Board:</div>
                 <Board
-                  problemLayout={this.props.problemLayout}
+                  boardLayout={this.props.boardLayout}
                   solutionLayout={this.state.solutionLayout}
                   clickHandler={this.boardClickHandler}
                   cellSize={this.state.cellSize || 0}
                 />
               </div>
               <div className='card-footer'>
-                <div className='card-title'>Rack:</div>
+                <div className='card-title'></div>
                 <Rack
                   letters={this.state.rackLetters}
                   clickHandler={this.rackClickHandler}

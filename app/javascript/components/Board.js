@@ -7,16 +7,16 @@ class Board extends React.Component {
     let table = [];
 
     //rows
-    for(let i = 0; i < this.props.problemLayout.length; i++) {
+    for(let i = 0; i < this.props.boardLayout.length; i++) {
       let row = [];
       // columns
-      for(let j = 0; j < this.props.problemLayout[0].length; j++) {
+      for(let j = 0; j < this.props.boardLayout[0].length; j++) {
         row.push(
           <BoardCell
             key={j}
             x={j}
             y={i}
-            problemLayout={this.props.problemLayout}
+            boardLayout={this.props.boardLayout}
             solutionLayout={this.props.solutionLayout}
             clickHandler={this.props.clickHandler}
             cellSize={this.props.cellSize}
