@@ -19,6 +19,8 @@ class Board extends React.Component {
             boardLayout={this.props.boardLayout}
             solutionLayout={this.props.solutionLayout}
             clickHandler={this.props.clickHandler}
+            tileInputHandler={this.props.tileInputHandler}
+            blurHandler={this.props.blurHandler}
             cellSize={this.props.cellSize}
           />
         );

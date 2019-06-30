@@ -26,6 +26,7 @@ class Problem extends React.Component {
   }
 
   boardClickHandler(e) {
+    e.stopPropagation();
     let x = e.target.dataset.boardPositionX;
     let y = e.target.dataset.boardPositionY;
 
@@ -77,8 +78,7 @@ class Problem extends React.Component {
     this.setState({cellSize: this.cellSize()});
   };
 
-  cellSize(width) {
-    //
+  cellSize() {
     let cardWidth = this.refs.problemContainer.offsetWidth;
     let windowHeight = window.innerHeight;
 
@@ -107,16 +107,18 @@ class Problem extends React.Component {
                   boardLayout={this.props.boardLayout}
                   solutionLayout={this.state.solutionLayout}
                   clickHandler={this.boardClickHandler}
-                  cellSize={this.state.cellSize || 0}
+                  cellSize={this.state.cellSize}
                 />
               </div>
               <div className='card-footer'>
-                <Rack
-                  letters={this.state.rackLetters}
-                  clickHandler={this.rackClickHandler}
-                  selectedLetter={this.state.selectedRackLetter}
-                  cellSize={this.state.cellSize}
-                />
+                <div className='row justify-content-center'>
+                  <Rack
+                    letters={this.state.rackLetters}
+                    clickHandler={this.rackClickHandler}
+                    selectedLetter={this.state.selectedRackLetter}
+                    cellSize={this.state.cellSize}
+                  />
+                </div>
               </div>
             </div>
           </div>
