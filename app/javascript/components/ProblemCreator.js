@@ -14,6 +14,8 @@ class ProblemCreator extends React.Component {
     this.rackClickHandler = this.rackClickHandler.bind(this);
     this.rackBlurHandler = this.rackBlurHandler.bind(this);
     this.boardBlurHandler = this.boardBlurHandler.bind(this);
+    this.addOrRemoveRow = this.addOrRemoveRow.bind(this);
+    this.addOrRemoveColumn = this.addOrRemoveColumn.bind(this);
   }
 
   defaultBoardLayout = [...Array(7)].map(x=>Array(7).fill(null));
@@ -112,6 +114,33 @@ class ProblemCreator extends React.Component {
     }
   }
 
+  addOrRemoveRow(e) {
+    let newLayout = this.state.boardLayout;
+
+    console.log(newLayout.length);
+    console.log(e.target.dataset);
+
+    if (e.target.dataset.rowAdd && newLayout.length < 10) {
+      newLayout.push(Array(newLayout[0].length).fill(null));
+    }
+    if (e.target.dataset.rowRemove && newLayout.length > 2) {
+      newLayout.pop();
+    }
+    this.setState({boardLayout: newLayout, cellSize: this.cellSize()});
+  }
+
+  addOrRemoveColumn(e) {
+    let newLayout = this.state.boardLayout;
+
+    if (e.target.dataset.columnAdd && newLayout[0].length < 10) {
+      newLayout.forEach((row)=>row.push(null));
+    }
+    if (e.target.dataset.columnRemove && newLayout[0].length > 2) {
+      newLayout.forEach((row)=>row.pop());
+    }
+    this.setState({boardLayout: newLayout, cellSize: this.cellSize()});
+  }
+
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
     this.updateDimensions();
@@ -122,12 +151,13 @@ class ProblemCreator extends React.Component {
   };
 
   cellSize() {
+    console.log("cellsizing");
     let cardWidth = this.refs.problemContainer.offsetWidth;
     let windowHeight = window.innerHeight;
 
     let tilesWide = Math.max(this.state.boardLayout[0].length, this.state.rackLetters.length);
 
-    let maxWidth = (cardWidth - 10) / tilesWide;
+    let maxWidth = (cardWidth - 10) / (tilesWide + 1);
     let maxHeight = (windowHeight) / (this.state.boardLayout.length + 2);
     return Math.min(maxWidth, maxHeight);
   };
@@ -138,13 +168,15 @@ class ProblemCreator extends React.Component {
         <div className='row justify-content-center'>
           <div className='col-xl-7 col-lg-8 col-md-10 col-sm-11 col-xs-12'>
             <div className='card' ref='problemContainer'>
-              <div className='card-body'>
+              <div className='card-body justify-content-center'>
                 <BoardBuilder
                   boardLayout={this.state.boardLayout}
                   clickHandler={this.boardClickHandler}
                   tileInputHandler={this.boardInputHandler}
                   blurHandler={this.boardBlurHandler}
                   cellSize={this.state.cellSize}
+                  rowClickHandler={this.addOrRemoveRow}
+                  columnClickHandler={this.addOrRemoveColumn}
                 />
               </div>
               <div className='card-footer'>

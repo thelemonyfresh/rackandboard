@@ -4,6 +4,19 @@ import Rack from "./Rack";
 import Tile from "./Tile";
 
 class RackBuilder extends React.Component {
+  addButton() {
+    if (!this.props.rackLetters.includes('+')) {
+      return (
+        <button
+          className="btn btn-secondary ml-1"
+          onClick={this.props.clickHandler}
+        >
+          +
+        </button>
+      );
+    };
+  };
+
   render () {
     if (this.props.rackLetters.length == 0) {
       return (
@@ -21,11 +34,7 @@ class RackBuilder extends React.Component {
           blurHandler={this.props.blurHandler}
           cellSize={this.props.cellSize}
         />
-        <button
-          onClick={this.props.clickHandler}
-        >
-          +
-        </button>
+        {this.addButton()}
       </React.Fragment>
     );
   }

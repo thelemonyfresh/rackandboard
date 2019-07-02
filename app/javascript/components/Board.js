@@ -33,13 +33,11 @@ class Board extends React.Component {
 
   render () {
     return (
-      <div className='row justify-content-center'>
-        <table>
+        <table className='m-1'>
           <tbody>
             {this.createGrid()}
           </tbody>
         </table>
-      </div>
     );
   }
 }
