@@ -26,6 +26,7 @@ class Problem extends React.Component {
   }
 
   boardClickHandler(e) {
+    e.stopPropagation();
     let x = e.target.dataset.boardPositionX;
     let y = e.target.dataset.boardPositionY;
 
@@ -42,13 +43,15 @@ class Problem extends React.Component {
     let newSelectedIndex = null;
 
     // remove solution letter from board
-    if (!this.state.selectedRackLetter && solutionLetter) {
+    if (this.state.selectedRackLetter == null && solutionLetter) {
+      console.log('blah');
       newSolutionArray[y][x] = null;
       newRackLetters.push(solutionLetter);
     };
 
     // place selected rack tile
     if (this.state.selectedRackLetter != null && emptyCell) {
+      console.log('bleeeh');
       newRackLetters.splice(rackLetterIndex,1);
       newSolutionArray[y][x] = rackLetter;
       newSelectedIndex = rackLetterIndex;
@@ -75,8 +78,7 @@ class Problem extends React.Component {
     this.setState({cellSize: this.cellSize()});
   };
 
-  cellSize(width) {
-    //
+  cellSize() {
     let cardWidth = this.refs.problemContainer.offsetWidth;
     let windowHeight = window.innerHeight;
 
@@ -101,22 +103,22 @@ class Problem extends React.Component {
           <div className='col-xl-7 col-lg-8 col-md-10 col-sm-11 col-xs-12'>
             <div className='card' ref='problemContainer'>
               <div className='card-body'>
-                <div className='card-title'>Board:</div>
                 <Board
                   boardLayout={this.props.boardLayout}
                   solutionLayout={this.state.solutionLayout}
                   clickHandler={this.boardClickHandler}
-                  cellSize={this.state.cellSize || 0}
+                  cellSize={this.state.cellSize}
                 />
               </div>
               <div className='card-footer'>
-                <div className='card-title'></div>
-                <Rack
-                  letters={this.state.rackLetters}
-                  clickHandler={this.rackClickHandler}
-                  selectedLetter={this.state.selectedRackLetter}
-                  cellSize={this.state.cellSize}
-                />
+                <div className='row justify-content-center'>
+                  <Rack
+                    letters={this.state.rackLetters}
+                    clickHandler={this.rackClickHandler}
+                    selectedLetter={this.state.selectedRackLetter}
+                    cellSize={this.state.cellSize}
+                  />
+                </div>
               </div>
             </div>
           </div>

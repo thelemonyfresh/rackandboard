@@ -1,18 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Tile from "./Tile";
+import TileInput from "./TileInput";
 
 class BoardCell extends React.Component {
   problemLetter() {
+    if (!this.props.boardLayout) return null; // may not be needed
     return this.props.boardLayout[this.props.y][this.props.x];
   }
 
   solutionLetter() {
+    if (!this.props.solutionLayout) return null;
     return this.props.solutionLayout[this.props.y][this.props.x];
   }
 
   getTile() {
     let letter = this.problemLetter() || this.solutionLetter();
+
+    if (letter == "+") {
+      return <TileInput
+               inputHandler={this.props.tileInputHandler}
+               boardPositionX={this.props.x}
+               boardPositionY={this.props.y}
+               cellSize={this.props.cellSize}
+               blurHandler={this.props.blurHandler}
+             />;
+    }
+
     if (letter) {
       return <Tile
                problemTile={!!this.problemLetter()}
