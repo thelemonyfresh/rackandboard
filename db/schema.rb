@@ -10,13 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_27_141854) do
+ActiveRecord::Schema.define(version: 2019_06_29_153858) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "alphagrams", force: :cascade do |t|
     t.string "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["text"], name: "index_alphagrams_on_text"
+  end
+
+  create_table "boards", force: :cascade do |t|
+    t.text "layout", array: true
+    t.integer "problem_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["problem_id"], name: "index_boards_on_problem_id"
+  end
+
+  create_table "letter_racks", force: :cascade do |t|
+    t.text "letters", array: true
+    t.integer "problem_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["problem_id"], name: "index_letter_racks_on_problem_id"
+  end
+
+  create_table "problems", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "words", force: :cascade do |t|
