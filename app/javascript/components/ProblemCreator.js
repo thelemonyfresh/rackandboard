@@ -146,6 +146,12 @@ class ProblemCreator extends React.Component {
     this.updateDimensions();
   };
 
+  componentDidUpdate() {
+    this.refs.boardLayoutInput.value = JSON.stringify(this.state.boardLayout);
+    this.refs.rackLettersInput.value = JSON.stringify(this.state.rackLetters);
+    console.log(this.state);
+  };
+
   updateDimensions() {
     this.setState({cellSize: this.cellSize()});
   };
@@ -165,6 +171,9 @@ class ProblemCreator extends React.Component {
   render () {
     return (
       <div className='container'>
+        <input type="text" ref='boardLayoutInput' name="problem[board_attributes][layout]"/>
+        <input type="text" ref='rackLettersInput' name="problem[letter_rack_attributes][letters]"/>
+        <input type="submit" value="Submit Problem"/>
         <div className='row justify-content-center'>
           <div className='col-xl-7 col-lg-8 col-md-10 col-sm-11 col-xs-12'>
             <div className='card' ref='problemContainer'>
