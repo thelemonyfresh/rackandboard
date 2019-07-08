@@ -13,8 +13,16 @@ class ProblemsController < ApplicationController
   def create
     puts problem_params
     puts parsed_problem_params = setup_array_params(problem_params)
-    p = Problem.create(parsed_problem_params)
-    puts p.errors.to_h
+    problem = Problem.new(parsed_problem_params)
+
+    if problem.save
+      redirect_to problems_path, flash: { success: "Problem created successfully." }
+    else
+      puts problem.errors.full_messages
+      redirect_to new_problem_path, flash: {
+                    error: problem.errors.full_messages.join('. ')
+                  }
+    end
   end
 
   private def setup_array_params(param_hash)
