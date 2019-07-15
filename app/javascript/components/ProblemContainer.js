@@ -36,7 +36,10 @@ class ProblemContainer extends React.Component {
   render () {
     return (
       <div className='row h-100'>
-        <div className='col-10'>
+        <div className="col-3 p-0">
+          {this.props.sidebar}
+        </div>
+        <div className='col-9 p-0'>
           <div className="card h-100">
             <div className="card-body text-center" ref='boardArea'>
               {this.props.board}
@@ -47,9 +50,7 @@ class ProblemContainer extends React.Component {
           </div>
 
         </div>
-        <div className="col-2">
-          {this.props.sidebar}
-        </div>
+
       </div>
     );
   }

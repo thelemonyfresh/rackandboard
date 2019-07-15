@@ -2,6 +2,7 @@ import React from "react";
 import BoardBuilder from './BoardBuilder';
 import RackBuilder from './RackBuilder';
 import ProblemContainer from './ProblemContainer';
+import BoardSizeControls from './BoardSizeControls';
 import PropTypes from "prop-types";
 
 class ProblemCreator extends React.Component {
@@ -167,7 +168,7 @@ class ProblemCreator extends React.Component {
     let cardHeight = this.refs.problemContainer.state.boardHeight;
 
     let tilesWide = Math.max(this.state.boardLayout[0].length, this.state.rackLetters.length);
-    let tilesHigh = this.state.boardLayout.length + 1;
+    let tilesHigh = this.state.boardLayout.length + 1.5;
 
     let maxWidth = (cardWidth) / (tilesWide);
     let maxHeight = (cardHeight) / (tilesHigh);
@@ -195,59 +196,30 @@ class ProblemCreator extends React.Component {
                  />;
 
     const sideBar = <div className='card'>
-                      <input
-                        type="text"
-                        ref='boardLayoutInput'
-                        name="problem[board_attributes][layout]"
-                      />
-                      <input
-                        type="text"
-                        ref='rackLettersInput'
-                        name="problem[letter_rack_attributes][letters]"
-                      />
-                      <input
-                        type="submit"
-                        value="Submit Problem"
-                      />
-
-                      <div className="btn-group-vertical ml-1"
-                           role="group"
-                           aria-label="row"
-                           onClick={this.addOrRemoveRow}
-                      >
-                        <button
-                          className='btn btn-secondary'
-                          data-row-remove={true}
-                          type="button"
-                        >
-                          -
-                        </button>
-                        <button
-                          className='btn btn-secondary'
-                          data-row-add={true}
-                          type="button"
-                        >
-                          +
-                        </button>
+                      <div className='card-body'>
+                        <input
+                          type="hidden"
+                          ref='boardLayoutInput'
+                          name="problem[board_attributes][layout]"
+                        />
+                        <input
+                          type="hidden"
+                          ref='rackLettersInput'
+                          name="problem[letter_rack_attributes][letters]"
+                        />
+                        <BoardSizeControls
+                          columnHandler={this.addOrRemoveColumn}
+                          rowHandler={this.addOrRemoveRow}
+                          numRows={this.state.boardLayout[0].length}
+                          numCols={this.state.boardLayout.length}
+                        />
                       </div>
-
-                      <div className="btn-group mt-1"
-                           role="group"
-                           aria-label="column"
-                           onClick={this.addOrRemoveColumn}
-                      >
+                      <div className='card-footer'>
                         <button
-                          className='btn btn-secondary'
-                          data-column-remove={true}
-                          type="button">
-                          -
-                        </button>
-                        <button
-                          className='btn btn-secondary'
-                          data-column-add={true}
-                          type="button"
+                          type="submit"
+                          className='btn btn-primary'
                         >
-                          +
+                          Submit Problem
                         </button>
                       </div>
                     </div>;
