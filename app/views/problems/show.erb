@@ -2,6 +2,7 @@
    url: solutions_url,
    html: { class: 'col-10 h-100'} do |form|
 %>
+  <%= hidden_field(:solution, :problem_id) %>
   <%= react_component(
     "Problem",
     {
