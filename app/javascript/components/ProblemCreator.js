@@ -26,6 +26,57 @@ class ProblemCreator extends React.Component {
     rackLetters: this.props.initialRackLetters || []
   }
 
+  //
+  // Lifecycle
+  //
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+
+    // TODO: sigh figure out how to not do this
+    const timer = setTimeout(() => {
+      this.updateDimensions();
+    }, 1);
+    return () => clearTimeout(timer);
+  };
+
+  componentDidUpdate() {
+    this.refs.boardLayoutInput.value = JSON.stringify(this.state.boardLayout);
+    this.refs.rackLettersInput.value = JSON.stringify(this.state.rackLetters);
+    console.log(this.state);
+  };
+
+  //
+  // Helpers
+  //
+  updateDimensions() {
+    this.setState({cellSize: this.cellSize()});
+  };
+
+  cellSize() {
+    console.log("cellsizing");
+    let cardWidth = this.refs.problemContainer.state.boardWidth;
+    let cardHeight = this.refs.problemContainer.state.boardHeight;
+
+    let tilesWide = Math.max(this.state.boardLayout[0].length, this.state.rackLetters.length);
+    let tilesHigh = this.state.boardLayout.length + 1.5;
+
+    let maxWidth = (cardWidth) / (tilesWide);
+    let maxHeight = (cardHeight) / (tilesHigh);
+
+    return Math.min(maxWidth, maxHeight);
+  };
+
+  validCharOrNull(char) {
+    if (char.length == 1 && char.charCodeAt(0) > 96 && char.charCodeAt(0) < 123) {
+      return char;
+    } else {
+      return null;
+    }
+  }
+
+  //
+  // Handlers
+  //
   boardClickHandler(e) {
     // stop propagating events
     e.stopPropagation();
@@ -107,14 +158,6 @@ class ProblemCreator extends React.Component {
     this.setState({rackLetters: newRackLetters});
   }
 
-  validCharOrNull(char) {
-    if (char.length == 1 && char.charCodeAt(0) > 96 && char.charCodeAt(0) < 123) {
-      return char;
-    } else {
-      return null;
-    }
-  }
-
   addOrRemoveRow(e) {
     let newLayout = this.state.boardLayout;
 
@@ -142,39 +185,10 @@ class ProblemCreator extends React.Component {
     this.setState({boardLayout: newLayout, cellSize: this.cellSize()});
   }
 
-  componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions);
 
-    // TODO: sigh figure out how to not do this
-    const timer = setTimeout(() => {
-      this.updateDimensions();
-    }, 1);
-    return () => clearTimeout(timer);
-  };
-
-  componentDidUpdate() {
-    this.refs.boardLayoutInput.value = JSON.stringify(this.state.boardLayout);
-    this.refs.rackLettersInput.value = JSON.stringify(this.state.rackLetters);
-    console.log(this.state);
-  };
-
-  updateDimensions() {
-    this.setState({cellSize: this.cellSize()});
-  };
-
-  cellSize() {
-    console.log("cellsizing");
-    let cardWidth = this.refs.problemContainer.state.boardWidth;
-    let cardHeight = this.refs.problemContainer.state.boardHeight;
-
-    let tilesWide = Math.max(this.state.boardLayout[0].length, this.state.rackLetters.length);
-    let tilesHigh = this.state.boardLayout.length + 1.5;
-
-    let maxWidth = (cardWidth) / (tilesWide);
-    let maxHeight = (cardHeight) / (tilesHigh);
-
-    return Math.min(maxWidth, maxHeight);
-  };
+  //
+  // Render
+  //
 
   render () {
     const board = <BoardBuilder

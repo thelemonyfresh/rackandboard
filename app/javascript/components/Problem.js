@@ -12,6 +12,32 @@ class Problem extends React.Component {
     this.updateDimensions = this.updateDimensions.bind(this);
   }
 
+  state = {
+    rackLetters: this.props.initialRackLetters,
+    solutionLayout: [...Array(this.problemHeight())].map(x=>Array(this.problemWidth()).fill(null)),
+    selectedRackLetter: null,
+    cellSize: 0
+  }
+
+  //
+  // Lifecycle
+  //
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDimensions);
+
+    // TODO: sigh figure out how to not do this
+    const timer = setTimeout(() => {
+      this.updateDimensions();
+    }, 1);
+    return () => clearTimeout(timer);
+  };
+
+
+  //
+  // Helpers
+  //
+
   problemWidth() {
     return this.props.boardLayout[0].length;
   }
@@ -19,12 +45,29 @@ class Problem extends React.Component {
     return this.props.boardLayout.length;
   };
 
-  state = {
-    rackLetters: this.props.initialRackLetters,
-    solutionLayout: [...Array(this.problemHeight())].map(x=>Array(this.problemWidth()).fill(null)),
-    selectedRackLetter: null,
-    cellSize: 0
-  }
+
+  updateDimensions() {
+    console.log("update dimensions");
+    this.setState({cellSize: this.cellSize()});
+  };
+
+  cellSize() {
+    console.log("calling cellsize");
+    let cardWidth = this.refs.problemContainer.state.boardWidth;
+    let cardHeight = this.refs.problemContainer.state.boardHeight;
+
+    let tilesWide = Math.max(this.problemWidth(), this.props.initialRackLetters.length);
+    let tilesHigh = this.problemHeight() + 1;
+
+    let maxWidth = cardWidth / tilesWide;
+    let maxHeight = cardHeight / tilesHigh;
+
+    return Math.min(maxWidth, maxHeight);
+  };
+
+  //
+  // Handlers
+  //
 
   boardClickHandler(e) {
     e.stopPropagation();
@@ -70,40 +113,15 @@ class Problem extends React.Component {
     });
   }
 
-  componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions);
-
-    // TODO: sigh figure out how to not do this
-    const timer = setTimeout(() => {
-      this.updateDimensions();
-    }, 1);
-    return () => clearTimeout(timer);
-  };
-
-  updateDimensions() {
-    console.log("update dimensions");
-    this.setState({cellSize: this.cellSize()});
-  };
-
-  cellSize() {
-    console.log("calling cellsize");
-    let cardWidth = this.refs.problemContainer.state.boardWidth;
-    let cardHeight = this.refs.problemContainer.state.boardHeight;
-
-    let tilesWide = Math.max(this.problemWidth(), this.props.initialRackLetters.length);
-    let tilesHigh = this.problemHeight() + 1;
-
-    let maxWidth = cardWidth / tilesWide;
-    let maxHeight = cardHeight / tilesHigh;
-
-    return Math.min(maxWidth, maxHeight);
-  };
-
   rackClickHandler(e) {
     let letterIndex = parseInt(e.target.dataset.rackPosition);
     letterIndex = this.state.selectedRackLetter != null ? null : letterIndex;
     this.setState({selectedRackLetter: letterIndex});
   };
+
+  //
+  // Render
+  //
 
   render () {
     const board = <Board
@@ -120,14 +138,23 @@ class Problem extends React.Component {
                    cellSize={this.state.cellSize}
                  />;
 
-    const sidebar = <div>this is the sidebar</div>;
+    const sideBar = <div className='card'>
+                      <div className='card-body'>
+                        <button
+                          type="submit"
+                          className='btn btn-primary'
+                        >
+                          Submit Solution
+                        </button>
+                      </div>
+                    </div>;
 
     return (
       <ProblemContainer
         ref='problemContainer'
         board={board}
         rack={rack}
-        sidebar={sidebar}
+        sidebar={sideBar}
       />
     );
   }

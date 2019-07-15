@@ -11,6 +11,24 @@ class ProblemContainer extends React.Component {
     boardHeight: 800
   };
 
+  //
+  // Helpers
+  //
+
+  measure () {
+    let rect = this.refs.boardArea.getBoundingClientRect();
+    if(this.state.width !== rect.width || this.state.height !== rect.height){
+      this.setState({
+        boardWidth: rect.width,
+        boardHeight: rect.height
+      });
+    }
+  }
+
+  //
+  // Lifecycle
+  //
+
   componentWillMount () {
     window.addEventListener('resize', this.measure, false);
   }
@@ -23,16 +41,9 @@ class ProblemContainer extends React.Component {
     this.measure();
   }
 
-  measure () {
-    let rect = this.refs.boardArea.getBoundingClientRect();
-    if(this.state.width !== rect.width || this.state.height !== rect.height){
-      this.setState({
-        boardWidth: rect.width,
-        boardHeight: rect.height
-      });
-    }
-  }
-
+  //
+  // Render
+  //
   render () {
     return (
       <div className='row h-100'>
