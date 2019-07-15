@@ -11,7 +11,11 @@
   </head>
 
   <body>
-    <%= render 'layouts/notifications' %>
-    <%= yield %>
+    <div class="container-fluid h-100">
+      <div class="row h-100">
+        <%= render 'layouts/navigation' %>
+        <%= yield %>
+      </div>
+    </div>
   </body>
 </html>

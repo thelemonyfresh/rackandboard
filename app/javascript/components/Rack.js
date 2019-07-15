@@ -36,9 +36,9 @@ class Rack extends React.Component {
 
   render () {
     return (
-      <React.Fragment>
+      <div className='row justify-content-center'>
         {this.getLetters()}
-      </React.Fragment>
+      </div>
     );
   }
 }

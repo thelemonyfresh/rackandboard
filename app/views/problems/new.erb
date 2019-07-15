@@ -1,3 +1,11 @@
-<%= form_with model: @problem, url: problems_url do |form| %>
-  <%= react_component("ProblemCreator") %>
+<%= form_with model: @problem,
+  url: problems_url,
+  html: { class: 'col-10 h-100' } do |form| %>
+  <%= react_component(
+    "ProblemCreator",
+    {},
+    {
+      class: ' h-100'
+    }
+    ) %>
 <% end %>
