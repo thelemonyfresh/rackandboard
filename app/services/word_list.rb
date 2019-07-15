@@ -36,4 +36,8 @@ class WordList
       "INSERT INTO words(text,alphagram_id,created_at,updated_at) VALUES #{words_for_db}"
     )
   end
+
+  def alphagram(word)
+    word.chars.sort.join
+  end
 end

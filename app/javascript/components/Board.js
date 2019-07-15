@@ -32,12 +32,15 @@ class Board extends React.Component {
   };
 
   render () {
+    console.log(`cellsize: ${this.props.cellSize}`);
     return (
+      <div className='row justify-content-center'>
         <table className='m-1'>
           <tbody>
             {this.createGrid()}
           </tbody>
         </table>
+      </div>
     );
   }
 }

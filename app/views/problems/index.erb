@@ -1,8 +1,11 @@
-<div><%= link_to "create a problem", new_problem_path %></div>
+<div class="col-10">
 
-Problems:
-<ul>
-<% @problems.each do |p|%>
-  <li><%= link_to p.id, problem_path(p) %></li>
-<% end %>
-</ul>
+  <div><%= link_to "create a problem", new_problem_path %></div>
+
+  Problems:
+  <div class='list-group'>
+    <% @problems.each do |p|%>
+      <%= link_to p.id, problem_path(p), class: 'list-group-item list-group-item-action' %>
+    <% end %>
+  </div>
+</div>

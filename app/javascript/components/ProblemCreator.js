@@ -1,7 +1,8 @@
 import React from "react";
 import BoardBuilder from './BoardBuilder';
 import RackBuilder from './RackBuilder';
-
+import ProblemContainer from './ProblemContainer';
+import BoardSizeControls from './BoardSizeControls';
 import PropTypes from "prop-types";
 
 class ProblemCreator extends React.Component {
@@ -143,7 +144,18 @@ class ProblemCreator extends React.Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.updateDimensions);
-    this.updateDimensions();
+
+    // TODO: sigh figure out how to not do this
+    const timer = setTimeout(() => {
+      this.updateDimensions();
+    }, 1);
+    return () => clearTimeout(timer);
+  };
+
+  componentDidUpdate() {
+    this.refs.boardLayoutInput.value = JSON.stringify(this.state.boardLayout);
+    this.refs.rackLettersInput.value = JSON.stringify(this.state.rackLetters);
+    console.log(this.state);
   };
 
   updateDimensions() {
@@ -152,48 +164,72 @@ class ProblemCreator extends React.Component {
 
   cellSize() {
     console.log("cellsizing");
-    let cardWidth = this.refs.problemContainer.offsetWidth;
-    let windowHeight = window.innerHeight;
+    let cardWidth = this.refs.problemContainer.state.boardWidth;
+    let cardHeight = this.refs.problemContainer.state.boardHeight;
 
     let tilesWide = Math.max(this.state.boardLayout[0].length, this.state.rackLetters.length);
+    let tilesHigh = this.state.boardLayout.length + 1.5;
 
-    let maxWidth = (cardWidth - 10) / (tilesWide + 1);
-    let maxHeight = (windowHeight) / (this.state.boardLayout.length + 2);
+    let maxWidth = (cardWidth) / (tilesWide);
+    let maxHeight = (cardHeight) / (tilesHigh);
+
     return Math.min(maxWidth, maxHeight);
   };
 
   render () {
-    return (
-      <div className='container'>
-        <div className='row justify-content-center'>
-          <div className='col-xl-7 col-lg-8 col-md-10 col-sm-11 col-xs-12'>
-            <div className='card' ref='problemContainer'>
-              <div className='card-body justify-content-center'>
-                <BoardBuilder
-                  boardLayout={this.state.boardLayout}
-                  clickHandler={this.boardClickHandler}
-                  tileInputHandler={this.boardInputHandler}
-                  blurHandler={this.boardBlurHandler}
-                  cellSize={this.state.cellSize}
-                  rowClickHandler={this.addOrRemoveRow}
-                  columnClickHandler={this.addOrRemoveColumn}
-                />
-              </div>
-              <div className='card-footer'>
-                <div className='row justify-content-center'>
-                  <RackBuilder
-                    rackLetters={this.state.rackLetters}
-                    clickHandler={this.rackClickHandler}
-                    tileInputHandler={this.rackInputHandler}
-                    blurHandler={this.rackBlurHandler}
+    const board = <BoardBuilder
+                    boardLayout={this.state.boardLayout}
+                    clickHandler={this.boardClickHandler}
+                    tileInputHandler={this.boardInputHandler}
+                    blurHandler={this.boardBlurHandler}
                     cellSize={this.state.cellSize}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                    rowClickHandler={this.addOrRemoveRow}
+                    columnClickHandler={this.addOrRemoveColumn}
+                  />;
+
+    const rack = <RackBuilder
+                   rackLetters={this.state.rackLetters}
+                   clickHandler={this.rackClickHandler}
+                   tileInputHandler={this.rackInputHandler}
+                   blurHandler={this.rackBlurHandler}
+                   cellSize={this.state.cellSize}
+                 />;
+
+    const sideBar = <div className='card'>
+                      <div className='card-body'>
+                        <input
+                          type="hidden"
+                          ref='boardLayoutInput'
+                          name="problem[board_attributes][layout]"
+                        />
+                        <input
+                          type="hidden"
+                          ref='rackLettersInput'
+                          name="problem[letter_rack_attributes][letters]"
+                        />
+                        <BoardSizeControls
+                          columnHandler={this.addOrRemoveColumn}
+                          rowHandler={this.addOrRemoveRow}
+                          numRows={this.state.boardLayout[0].length}
+                          numCols={this.state.boardLayout.length}
+                        />
+                      </div>
+                      <div className='card-footer'>
+                        <button
+                          type="submit"
+                          className='btn btn-primary'
+                        >
+                          Submit Problem
+                        </button>
+                      </div>
+                    </div>;
+    return (
+      <ProblemContainer
+        ref='problemContainer'
+        board={board}
+        rack={rack}
+        sidebar={sideBar}
+      />
     );
   }
 }

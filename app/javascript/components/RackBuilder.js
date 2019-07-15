@@ -8,7 +8,7 @@ class RackBuilder extends React.Component {
     if (!this.props.rackLetters.includes('+')) {
       return (
         <button
-          className="btn btn-secondary ml-1"
+          className="btn btn-secondary ml-4"
           onClick={this.props.clickHandler}
         >
           +
@@ -26,7 +26,7 @@ class RackBuilder extends React.Component {
       );
     }
     return (
-      <React.Fragment>
+      <div className="row justify-content-center">
         <Rack
           letters={this.props.rackLetters}
           clickHandler={this.props.clickHandler}
@@ -35,7 +35,7 @@ class RackBuilder extends React.Component {
           cellSize={this.props.cellSize}
         />
         {this.addButton()}
-      </React.Fragment>
+      </div>
     );
   }
 }
