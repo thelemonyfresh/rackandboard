@@ -16,7 +16,7 @@ class Problem extends React.Component {
 
   state = {
     rackLetters: this.props.initialRackLetters,
-    solutionLayout: [...Array(this.problemHeight())].map(x=>Array(this.problemWidth()).fill(null)),
+    solutionLayout: [...Array(this.problemHeight())].map(x=>Array(this.problemWidth()).fill('')),
     selectedRackLetter: null,
     cellSize: 0
   }
@@ -91,7 +91,7 @@ class Problem extends React.Component {
     // remove solution letter from board
     if (this.state.selectedRackLetter == null && solutionLetter) {
       console.log('blah');
-      newSolutionArray[y][x] = null;
+      newSolutionArray[y][x] = '';
       newRackLetters.push(solutionLetter);
     };
 
@@ -124,7 +124,12 @@ class Problem extends React.Component {
   solutionSubmitHandler(e) {
     console.log("submit");
 
-    ax.post('/solutions').then(res => {
+    ax.post('/solutions', {
+      solution: {
+        problem_id: this.props.problem_id,
+        layout: this.state.solutionLayout
+      }
+    }).then(res => {
       console.log("response");
       console.log(res);
     });

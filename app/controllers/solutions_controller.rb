@@ -8,6 +8,7 @@ class SolutionsController < ApplicationController
       puts "yay"
     else
       puts "boooo"
+      puts solution.errors.full_messages
     end
   end
 
@@ -16,6 +17,9 @@ class SolutionsController < ApplicationController
   end
 
   private def solution_params
-    params.require(:solution).permit(:problem_id, :layout)
+    #prms = params.require[:solution].permit(:problem_id, :layout)
+    prms = request.parameters[:solution].slice(:problem_id, :layout)
+    puts prms
+    prms
   end
 end
