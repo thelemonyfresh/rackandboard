@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Board from "./Board";
 import Rack from "./Rack";
 import ProblemContainer from "./ProblemContainer";
+import ax from "packs/axios";
 
 class Problem extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class Problem extends React.Component {
     this.rackClickHandler = this.rackClickHandler.bind(this);
     this.boardClickHandler = this.boardClickHandler.bind(this);
     this.updateDimensions = this.updateDimensions.bind(this);
+    this.solutionSubmitHandler = this.solutionSubmitHandler.bind(this);
   }
 
   state = {
@@ -119,6 +121,15 @@ class Problem extends React.Component {
     this.setState({selectedRackLetter: letterIndex});
   };
 
+  solutionSubmitHandler(e) {
+    console.log("submit");
+
+    ax.post('/solutions').then(res => {
+      console.log("response");
+      console.log(res);
+    });
+  };
+
   //
   // Render
   //
@@ -141,8 +152,9 @@ class Problem extends React.Component {
     const sideBar = <div className='card'>
                       <div className='card-body'>
                         <button
-                          type="submit"
+                          type="button"
                           className='btn btn-primary'
+                          onClick={this.solutionSubmitHandler}
                         >
                           Submit Solution
                         </button>
