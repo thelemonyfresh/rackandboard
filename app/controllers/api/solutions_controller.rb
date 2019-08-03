@@ -1,14 +1,16 @@
-class SolutionsController < ApplicationController
+class Api::SolutionsController < Api::BaseController
   before_action :find_problem
 
   def create
     solution = @problem.solutions.new(solution_params)
 
     if solution.save
-      puts "yay"
+      puts "solution saved"
+      render json: solution
     else
-      puts "boooo"
+      puts "solution not saved"
       puts solution.errors.full_messages
+
     end
   end
 

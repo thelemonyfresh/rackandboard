@@ -124,7 +124,7 @@ class Problem extends React.Component {
   solutionSubmitHandler(e) {
     console.log("submit");
 
-    ax.post('/solutions', {
+    ax.post('/api/solutions', {
       solution: {
         problem_id: this.props.problem_id,
         layout: this.state.solutionLayout

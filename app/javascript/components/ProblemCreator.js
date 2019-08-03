@@ -19,7 +19,7 @@ class ProblemCreator extends React.Component {
     this.addOrRemoveColumn = this.addOrRemoveColumn.bind(this);
   }
 
-  defaultBoardLayout = [...Array(7)].map(x=>Array(7).fill(null));
+  defaultBoardLayout = [...Array(7)].map(x=>Array(7).fill(''));
 
   state = {
     boardLayout: this.props.initialBoardLayout || this.defaultBoardLayout,
@@ -53,7 +53,6 @@ class ProblemCreator extends React.Component {
   };
 
   cellSize() {
-    console.log("cellsizing");
     let cardWidth = this.refs.problemContainer.state.boardWidth;
     let cardHeight = this.refs.problemContainer.state.boardHeight;
 
@@ -70,7 +69,7 @@ class ProblemCreator extends React.Component {
     if (char.length == 1 && char.charCodeAt(0) > 96 && char.charCodeAt(0) < 123) {
       return char;
     } else {
-      return null;
+      return '';
     }
   }
 
@@ -89,12 +88,10 @@ class ProblemCreator extends React.Component {
 
     let problemLetter = this.state.boardLayout[y][x];
 
-    console.log(`pl: ${problemLetter}`);
-
-    if ( problemLetter == null) {
+    if ( problemLetter == '') {
       newBoardLayout[y][x] = "+";
     } else {
-      newBoardLayout[y][x] = null;
+      newBoardLayout[y][x] = '';
     };
 
     this.setState({boardLayout: newBoardLayout});
@@ -165,7 +162,7 @@ class ProblemCreator extends React.Component {
     console.log(e.target.dataset);
 
     if (e.target.dataset.rowAdd && newLayout.length < 10) {
-      newLayout.push(Array(newLayout[0].length).fill(null));
+      newLayout.push(Array(newLayout[0].length).fill(''));
     }
     if (e.target.dataset.rowRemove && newLayout.length > 2) {
       newLayout.pop();

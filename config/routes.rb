@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :problems, only: [:show, :new, :index, :create]
-  resources :solutions, only: [:create]
+
+  namespace :api do
+    resources :solutions, only: [:create]
+  end
 end

@@ -1,18 +1,12 @@
-<%= form_with model: @solution,
-   url: solutions_url,
-   html: { class: 'col-10 h-100'} do |form|
+<%= react_component(
+  "Problem",
+  {
+    boardLayout: @problem.board.layout,
+    initialRackLetters: @problem.letter_rack.letters,
+    problem_id: @problem.id
+  },
+  {
+    class: 'h-100'
+  }
+  )
 %>
-  <%= hidden_field(:solution, :problem_id) %>
-  <%= react_component(
-    "Problem",
-    {
-      boardLayout: @problem.board.layout,
-      initialRackLetters: @problem.letter_rack.letters,
-      problem_id: @problem.id
-    },
-    {
-      class: 'h-100'
-    }
-    )
-  %>
-<% end %>
